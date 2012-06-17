@@ -82,12 +82,7 @@ define('DEBUG',false);		// set this to true to print out debug statements
 		if (DEBUG) print "havingClause: $havingClause</br>\n";
 		
 	 $sqlStatement = "SELECT rating, tag, " . $countStr . " FROM " . SQL_TAGS_TABLE . $whereClause . " GROUP BY tag, rating" . $havingClause;
-/*		
-		if ($count == "people")
-			$sqlStatement = "SELECT rating, tag, " . $countStr . " FROM " . SQL_TAGS_TABLE . $whereClause . " GROUP BY tag, rating" . $havingClause; 
-		else
-			$sqlStatement = "SELECT rating, tag, SUM(count) FROM " . SQL_TAGS_TABLE . $whereClause . " GROUP BY tag, rating" . $havingClause; 
-*/
+
 		if (DEBUG) print "sqlStatement: $sqlStatement</br>\n";
 		if (DEBUG) print "Rating: " . ratingString($rating) . "</br>\n";
 	
@@ -104,11 +99,6 @@ define('DEBUG',false);		// set this to true to print out debug statements
 			$jsonRow['rating'] = $row["rating"];
 			$jsonRow['tag'] = $row["tag"];
 			$jsonRow['count'] = $row[$countStr];
-/*			if ($count == "people")		// if count is set to people then do a count instead of SUM
-				$jsonRow['count'] = $row["COUNT(count)"];
-			else
-				$jsonRow['count'] = $row["SUM(count)"];
-	*/
 			$jsonRows[] = $jsonRow;
 		}
 		return $jsonRows;
