@@ -22,6 +22,11 @@ function docLoaded() {
 </head>
 <body>
 <form id="form1" name="form1" method="get" action="">
+<?php
+// include the pull down menu to select site
+require_once "selectMenu.php";
+?>
+	<br />
   <label>Rating:
     <select name="rating" id="rating" onchange="updateRatings()">
       <option value="all">All</option>
@@ -76,9 +81,14 @@ define('DEBUG',true);
 	function generateTable($rating = "all",$count="allTags",$minimum=0) {
 		$fileURL = "http://33.33.33.33/preakness/stumbleupon/sql/jsonData.php";
 		$fileURL.= "?rating=" . $rating . "&count=" . $count . "&minimum=" . $minimum;
-		if (DEBUG) print "fileURL: $fileURL\n</br>";
+		if (DEBUG) print "fileURL: $fileURL\n<br />";
 		$result = json_decode(file_get_contents($fileURL));
-		print "Rating: " . ratingString($rating) . "</br>\n";
+		print "Rating: " . ratingString($rating) . "<br />\n";
+		print "Count: ";
+		print ($count == "people") ? "People" : "All Tags"; 
+		print "<br />\n";
+		print "Minimum: ";
+		print ($minimum . 0) ? "$minimum tags<br />\n" : "None<br />\n";
 		outputTableHeader($rating);
 		foreach($result as $row) {
 			print "<tr>\n";
@@ -89,7 +99,18 @@ define('DEBUG',true);
 		print "</table>\n";
 	}
 
-	generateTable($_GET["rating"],$_GET["count"],$_GET["minimum"]);
+	if (!isset($_GET["count"]))
+		$count = "allTags";
+	else 
+		$count = $_GET["count"];
+	$minimum = 0;
+	if (isset($_GET["minimum"]))
+		$minimum = $_GET["minimum"];
+	$rating = "all";
+	if (isset($_GET["rating"]))
+		$rating = $_GET["rating"];	
+		
+	generateTable($rating,$count,$minimum);
 ?>
 </body>
 </html>
