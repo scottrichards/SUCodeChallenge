@@ -20,10 +20,11 @@
 	width : 290px;
 	background-image: url(images/sulogo.png);
 	background-repeat:no-repeat;
+	float:left;
 }
 
 header {
-margin: 10px;
+/*padding: 5px; */
 }
 
 body {
@@ -34,9 +35,6 @@ body {
 	text-align: center;
 }
 
-.center{
-	
-}
 </style>
 <script type="text/javascript">
 
@@ -48,14 +46,20 @@ function removeElement(node)
 	node.parentNode.removeChild(node);
 }
 
+function returnRatingImage(rating)
+{
+	if (rating == 1)
+	 return '<img src="images/thumbsUp.gif" width="25" height="25" />';
+	if (rating == -1)
+	 return '<img src="images/thumbsDown.gif" width="25" height="25" />';
+	else 
+		return'0'; 
+}
+
 function generateTable(responseText)
 {
 	// this is the div with id 'main' where we want to insert the table
 	var main = document.getElementById("main");
-	// if the table already exists remove
-	table = document.getElementById("tableId");
-	if (table)
-		removeElement(table);
 	// make sure the return value is converted to JSON object
 	jsonObj = JSON.parse(responseText);
 	var numRows = jsonObj.length;
@@ -63,7 +67,7 @@ function generateTable(responseText)
 	var tableHTML = '<table id="tableId" border="1" cellpadding="2" cellspacing="0">\n';
 	tableHTML += '<tr><th>Rating</th><th>Tag</th><th>Count</th></tr>'; 
 	for (i=0;i<jsonObj.length;i++) {
-		tableHTML += '<tr><td>' + jsonObj[i].rating + '</td><td>' + jsonObj[i].tag + '</td><td>' + jsonObj[i].count + '</td></tr>';
+		tableHTML += '<tr><td>' + returnRatingImage(jsonObj[i].rating) + '</td><td>' + jsonObj[i].tag + '</td><td>' + jsonObj[i].count + '</td></tr>';
 		console.log("Tag: " + jsonObj[i].tag + "Count: " + jsonObj[i].count);
 	}
 	tableHTML += "</table>";
@@ -88,6 +92,7 @@ function filter() {
 		}
 		
 		xmlHttp = new XMLHttpRequest();
+		// ToDo Remove hard coded URL
 		url = "http://33.33.33.33/preakness/stumbleupon/sql/jsonData.php";
 		url += "?rating=" + document.forms["filterform"].elements["rating"].value;
 	  url += "&count=" + ((document.forms["filterform"].elements["tagCount"].checked) ? "tagCount" : "people");
@@ -105,8 +110,8 @@ function filter() {
 
 <body>
 <header>
-<img src="images/sulogo.png" width="291" height="66" alt="StumbleUpon" /> 
-<h2 class="centered">Dashboard</h2>
+<img src="images/sulogo.png" width="213" height="48" alt="StumbleUpon" /> 
+<h2 class="centered">Display &amp; Filter Tag Data using AJAX</h2>
 </header>
 <div id="filter">
 <form id="filterform" name="filterform" method="get" action="">
@@ -142,7 +147,6 @@ function filter() {
     <label>Count:
       <input name="minimum" type="text" size="5" onblur="filter()"/></label>
   Minimum </p>
-  <input type="button" name="button" id="button" value="Filter" onclick="filter()"/>
 </form>
 </div>
 <div id="main">
