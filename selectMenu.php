@@ -15,7 +15,7 @@
 		}
 		
 		// output select pull down menu with specified name	
-		print "\n<select name=\"{$pulldownName}\">";
+		print "\n<select name=\"{$pulldownName}\" onchange=\"filter()\">";
 		// retreive each row from results of query
 		print "\n\t<option value=\"all\">All</option>";
 		while ($row = @ mysql_fetch_array($result)) {

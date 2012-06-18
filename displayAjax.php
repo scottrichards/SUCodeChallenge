@@ -40,13 +40,26 @@ body {
 </style>
 <script type="text/javascript">
 
+window.onload=filter;
+
+// remove the specified html node from the dom by navigating up to its parent node
+function removeElement(node)
+{
+	node.parentNode.removeChild(node);
+}
+
 function generateTable(responseText)
 {
+	// this is the div with id 'main' where we want to insert the table
 	var main = document.getElementById("main");
-	main.innerHTML = responseText;
+	// if the table already exists remove
+	table = document.getElementById("tableId");
+	if (table)
+		removeElement(table);
+	// make sure the return value is converted to JSON object
 	jsonObj = JSON.parse(responseText);
 	var numRows = jsonObj.length;
-	main.innerHTML += '\n<br />';
+	main.innerHTML = '\n<br />';
 	var tableHTML = '<table id="tableId" border="1" cellpadding="2" cellspacing="0">\n';
 	tableHTML += '<tr><th>Rating</th><th>Tag</th><th>Count</th></tr>'; 
 	for (i=0;i<jsonObj.length;i++) {
@@ -64,9 +77,13 @@ function filter() {
 	if (window.XMLHttpRequest) {
 		function processResult() {
 			if (xmlHttp.readyState == 4 && xmlHttp.status==200) {
+//			console.log(xmlHttp.responseText);
 				generateTable(xmlHttp.responseText);
 			} else {
-				main.innerHTML = "Error could not retrieve data from: " + url;
+				if (xmlHttp.readyState == 4 && xmlHttp.status!=200) {
+					console.log("readyState: " + xmlHttp.readyState + " status: " + xmlHttp.status);
+					main.innerHTML = "Error could not retrieve data from: " + url;
+				}
 			}
 		}
 		
@@ -101,7 +118,7 @@ function filter() {
   </label>
 	<br />
   <label>Rating:
-    <select name="rating" id="rating" onchange="updateRatings()">
+    <select name="rating" id="rating" onchange="filter()">
       <option value="all">All</option>
       <option value="0">None</option>
       <option value="1">Thumbs Up</option>
@@ -113,17 +130,17 @@ function filter() {
   <p>
     Count:
     <label>
-      <input name="count" type="radio" id="tagCount" value="tagCount" checked="checked" />
+      <input name="count" type="radio" id="tagCount" value="tagCount" checked="checked" onchange="filter()" />
       Total Tags
     </label>
     <label>
-      <input type="radio" name="count" value="people" id="peopleCount" />
+      <input type="radio" name="count" value="people" id="peopleCount" onchange="filter()"/>
       People
     </label>
   </p>
   <p>
     <label>Count:
-      <input name="minimum" type="text" size="5" /></label>
+      <input name="minimum" type="text" size="5" onblur="filter()"/></label>
   Minimum </p>
   <input type="button" name="button" id="button" value="Filter" onclick="filter()"/>
 </form>
