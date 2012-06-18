@@ -63,7 +63,7 @@ define('DEBUG',false);		// set this to true to print out debug statements
 		return $fieldNames;
 	}
 	
-	function generateJSON($rating = NULL,$count,$minimum = NULL) {
+	function generateJSON($rating = NULL,$count,$minimum = NULL,$siteName="all") {
 		// create a connection to mysql
 		$connection = mysql_connect(SQL_SERVER,SQL_USER);
 		// select the stumbleupon database
@@ -71,6 +71,13 @@ define('DEBUG',false);		// set this to true to print out debug statements
 		$whereClause = "";
 		if (isset($rating) && $rating != "all") {
 			$whereClause = " WHERE rating='" . $rating . "'";
+		}
+		if ($siteName != "all") {
+			if ($whereClause == "")
+				$whereClause = " WHERE ";
+			else
+				$whereClause .= " AND ";
+			$whereClause .= "siteName = '" . $siteName . "'";
 		}
 		$havingClause = "";
 		// to get the # of individual people you execute the following SQL statement COUNT(count) instead of SUM(COUNT)
@@ -109,6 +116,6 @@ define('DEBUG',false);		// set this to true to print out debug statements
 	$minimum = 0;
 	if (isset($_GET["minimum"]))
 		$minimum = $_GET["minimum"];
-	$json = json_encode(generateJSON($_GET["rating"],$_GET["count"],$minimum));
+	$json = json_encode(generateJSON(@ $_GET["rating"],$_GET["count"],$minimum,@ $_GET["siteName"]));
 	print "$json";
 ?>
