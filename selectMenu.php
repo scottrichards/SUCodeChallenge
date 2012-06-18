@@ -8,7 +8,7 @@
 		if (DEBUG) print "SQL: $sqlDistinctQuery\n<br />";
 		
 		$result = @ mysql_query($sqlDistinctQuery, $connection);
-		print "Num Rows: " . mysql_num_rows($result) . "\n<br />";
+		if (DEBUG) print "Num Rows: " . mysql_num_rows($result) . "\n<br />";
 		if (!$result) {
 			print "Error with sql Statement: $sqlDistinctQuery\n";
 			die;
@@ -17,6 +17,7 @@
 		// output select pull down menu with specified name	
 		print "\n<select name=\"{$pulldownName}\">";
 		// retreive each row from results of query
+		print "\n\t<option value=\"all\">All</option>";
 		while ($row = @ mysql_fetch_array($result)) {
 				if (DEBUG) print "$row[$attributeName]\n<br />"; 
 			print "\n\t<option value=\"{$row[$attributeName]}\">{$row[$attributeName]}</option>";

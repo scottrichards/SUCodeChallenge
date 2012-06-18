@@ -22,10 +22,12 @@ function docLoaded() {
 </head>
 <body>
 <form id="form1" name="form1" method="get" action="">
-<?php
-// include the pull down menu to select site
-require_once "selectMenu.php";
-?>
+	<label>Site:
+		<?php
+    // include the pull down menu to select site
+    require_once "selectMenu.php";
+    ?>
+  </label>
 	<br />
   <label>Rating:
     <select name="rating" id="rating" onchange="updateRatings()">
@@ -56,7 +58,7 @@ require_once "selectMenu.php";
 </form>
 <?php 
 
-define('DEBUG',true);
+//define('DEBUG',true);
 
 	function ratingString($rating = "All") {
 	
@@ -78,11 +80,14 @@ define('DEBUG',true);
 		print "<tr>$ratingColHeader<td>tag</td><td>count</td></tr>\n";
 	}
 
-	function generateTable($rating = "all",$count="allTags",$minimum=0) {
+	function generateTable($rating = "all",$count="allTags",$minimum=0, $siteName="all") {
 		$fileURL = "http://33.33.33.33/preakness/stumbleupon/sql/jsonData.php";
-		$fileURL.= "?rating=" . $rating . "&count=" . $count . "&minimum=" . $minimum;
+		$fileURL.= "?rating=" . $rating . "&count=" . $count . "&minimum=" . $minimum . "&siteName=" . $siteName;
 		if (DEBUG) print "fileURL: $fileURL\n<br />";
 		$result = json_decode(file_get_contents($fileURL));
+		print "Site: ";
+		print ($siteName == "all") ? "All" : $siteName;
+		print "\n<br />";
 		print "Rating: " . ratingString($rating) . "<br />\n";
 		print "Count: ";
 		print ($count == "people") ? "People" : "All Tags"; 
@@ -109,8 +114,12 @@ define('DEBUG',true);
 	$rating = "all";
 	if (isset($_GET["rating"]))
 		$rating = $_GET["rating"];	
+	if (isset($_GET["siteNameSelectMenu"]))
+		$siteName = $_GET["siteNameSelectMenu"];
+	else
+		$siteName = "all";		
 		
-	generateTable($rating,$count,$minimum);
+	generateTable($rating,$count,$minimum,$siteName);
 ?>
 </body>
 </html>
