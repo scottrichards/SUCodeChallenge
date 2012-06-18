@@ -75,7 +75,7 @@ function docLoaded() {
 	}
 
 	function outputTableHeader($rating) {
-		print '<table id="tableId" border="1">'."\n"; 
+		print '<table id="tableId" border="1" cellspacing="0">'."\n"; 
 		$ratingColHeader = ($rating == NULL || $rating== "all") ? "<td>rating</td>": "";
 		print "<tr>$ratingColHeader<td>tag</td><td>count</td></tr>\n";
 	}

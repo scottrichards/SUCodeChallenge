@@ -6,7 +6,7 @@
 <style type="text/css">
 #main {
 	margin: 10px;
-	
+	background-color: #ffffff;
 }
 
 .logo-primary {
@@ -114,5 +114,6 @@ body,td,th {
 	
 	importFile("hubspotsmall.com");
 ?>
+</div>
 </body>
 </html>
