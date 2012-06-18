@@ -5,14 +5,19 @@
 <title>StumbleUpon Dashboard</title>
 <style type="text/css">
 #main {
-	padding: 10px;
+	padding : 5px;
+	margin : 5px;
 	background-color: #ffffff;
+	float : left;
 }
 
 #filter {
-	padding: 10px;
+	padding: 5px;
+	margin: 5px;
 	border: thin solid #666;
 	background-color:#eee;
+	float : left;
+	font-size:.8em;
 }
 
 .logo-primary {
@@ -114,39 +119,41 @@ function filter() {
 <h2 class="centered">Display &amp; Filter Tag Data using AJAX</h2>
 </header>
 <div id="filter">
-<form id="filterform" name="filterform" method="get" action="">
-	<label>Site:
-		<?php
+<form id="filterform" name="filterform" method="get" action=""><table width="200" border="0" cellspacing="1">
+  <tr>
+    <td>Site:</td>
+    <td><?php
     // include the pull down menu to select site
     require_once "selectMenu.php";
-    ?>
-  </label>
-	<br />
-  <label>Rating:
-    <select name="rating" id="rating" onchange="filter()">
+    ?></td>
+  </tr>
+  <tr>
+    <td>Rating:</td>
+    <td><select name="rating" id="rating" onchange="filter()">
       <option value="all">All</option>
       <option value="0">None</option>
       <option value="1">Thumbs Up</option>
       <option value="-1">Thumbs Down</option>
-    </select>
-    <br />
- 
-  </label>
-  <p>
-    Count:
-    <label>
+    </select></td>
+  </tr>
+  <tr>
+    <td>Count:</td>
+    <td><label>
       <input name="count" type="radio" id="tagCount" value="tagCount" checked="checked" onchange="filter()" />
       Total Tags
     </label>
+    <br />
     <label>
       <input type="radio" name="count" value="people" id="peopleCount" onchange="filter()"/>
       People
-    </label>
-  </p>
-  <p>
-    <label>Count:
-      <input name="minimum" type="text" size="5" onblur="filter()"/></label>
-  Minimum </p>
+    </label></td>
+  </tr>
+  <tr>
+    <td>Count:</td>
+    <td><label>
+      <input name="minimum" type="text" size="5" onblur="filter()"/>Minimum</label></td>
+  </tr>
+</table>
 </form>
 </div>
 <div id="main">
