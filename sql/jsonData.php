@@ -63,12 +63,13 @@ define('DEBUG',false);		// set this to true to print out debug statements
 		return $fieldNames;
 	}
 	
-	function generateJSON($rating = NULL,$count,$minimum = NULL,$siteName="all") {
+	function generateJSON($rating = NULL,$count,$minimum = NULL,$siteName="all",$orderBy=NULL,$sortOrder=NULL) {
 		// create a connection to mysql
 		$connection = mysql_connect(SQL_SERVER,SQL_USER);
 		// select the stumbleupon database
 		mysql_select_db(SQL_DATABASE,$connection);
 		$whereClause = "";
+		
 		if (isset($rating) && $rating != "all") {
 			$whereClause = " WHERE rating='" . $rating . "'";
 		}
@@ -83,12 +84,23 @@ define('DEBUG',false);		// set this to true to print out debug statements
 		// to get the # of individual people you execute the following SQL statement COUNT(count) instead of SUM(COUNT)
 		$countStr = ($count == "people") ? "COUNT(count)" : "SUM(count)";
 		if (isset($minimum) && $minimum > 0) {
-			
 			$havingClause = " HAVING " . $countStr . " >= " . $minimum;
 		}
 		if (DEBUG) print "havingClause: $havingClause</br>\n";
+		// add an ORDER BY claus if we have orderBy parameter
+		$orderClause = "";
+		if (isset($orderBy)) {
+			$orderClause = " ORDER BY ";
+			if ($orderBy == "count") 
+				$orderClause .= ($count == "people") ? "COUNT(count)" : "SUM(count)";
+			else
+				$orderClause .= $orderBy;
+			if (isset($sortOrder))
+				$orderClause .= " " . $sortOrder;
+		}
+		if (DEBUG) print "ORDER BY: $orderClause</br>\n";
 		
-	 $sqlStatement = "SELECT rating, tag, " . $countStr . " FROM " . SQL_TAGS_TABLE . $whereClause . " GROUP BY tag, rating" . $havingClause;
+	 $sqlStatement = "SELECT rating, tag, " . $countStr . " FROM " . SQL_TAGS_TABLE . $whereClause . " GROUP BY tag, rating" . $havingClause . $orderClause;
 
 		if (DEBUG) print "sqlStatement: $sqlStatement</br>\n";
 		if (DEBUG) print "Rating: " . ratingString($rating) . "</br>\n";
@@ -116,6 +128,6 @@ define('DEBUG',false);		// set this to true to print out debug statements
 	$minimum = 0;
 	if (isset($_GET["minimum"]))
 		$minimum = $_GET["minimum"];
-	$json = json_encode(generateJSON(@ $_GET["rating"],$_GET["count"],$minimum,@ $_GET["siteName"]));
+	$json = json_encode(generateJSON(@ $_GET["rating"],$_GET["count"],$minimum,@ $_GET["siteName"],@ $_GET["orderBy"],@ $_GET["sortOrder"]));
 	print "$json";
 ?>
