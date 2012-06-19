@@ -38,6 +38,12 @@
 	float:left;
 }
 
+.nav-home {
+	background-image: url(images/home.gif);
+	background-repeat:no-repeat;
+	float:right;
+}
+
 header {
 /*padding: 5px; */
 }
@@ -48,6 +54,10 @@ body {
 }
 .centered {
 	text-align: center;
+}
+
+.clearFloat {
+	clear : both;
 }
 
 </style>
@@ -201,8 +211,9 @@ function filter() {
 
 <body>
 <header>
-<img src="images/sulogo.png" width="213" height="48" alt="StumbleUpon" /> 
-<h2 class="centered">Display &amp; Filter Tag Data using AJAX</h2>
+<img src="images/sulogo.png" width="213" height="48" alt="StumbleUpon" style="float:left"/>
+<a href="index.html"><img src="images/home.gif" style="float:right" /></a>
+<h2 class="clearFloat centered">Display &amp; Filter Tag Data using AJAX</h2>
 </header>
 <div id="sidePane">
   <div id="filter">

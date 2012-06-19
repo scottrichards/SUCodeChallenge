@@ -28,6 +28,15 @@ body,td,th {
 	text-align: center;
 }
 
+.simpleList {
+	list-style-type: none;
+	margin : 0px;
+}
+
+
+#main .simpleList li {
+	margin-top: 10px;
+}
 </style>
 </head>
 
@@ -37,6 +46,11 @@ body,td,th {
 <h2 class="centered">Dashboard</h2>
 </header>
 <div id="main">
+  <ul class="simpleList">
+    <li><a href="readData.php">Import Data</a></li>
+    <li><a href="display.php">Display Tag Data with PHP</a></li>
+    <li><a href="displayAjax.php">Display Tag Data using AJAX</a></li>
+  </ul>
   <p><a href="parseFile.php">Parse CSV File</a>
   <br />
   <a href="readData.php">Import Data</a>
