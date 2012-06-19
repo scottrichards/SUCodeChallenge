@@ -2,7 +2,65 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Display Data</title>
+<title>Display Tag Data with PHP</title>
+<style type="text/css">
+#main {
+	padding : 5px;
+	margin : 5px;
+	background-color: #ffffff;
+	float : left;
+}
+
+#filter {
+	padding: 5px;
+	border: thin solid #CCC;
+	background-color:#eee;
+	font-size:.8em;
+}
+
+#sidePane {
+	margin: 5px;
+	float : left;
+	
+}
+
+#instructions{
+	font-size:.8em;
+	margin-top:5px;
+	max-width:250px;
+}
+
+.logo-primary {
+	height : 66px;
+	width : 290px;
+	background-image: url(images/sulogo.png);
+	background-repeat:no-repeat;
+	float:left;
+}
+
+.nav-home {
+	background-image: url(images/home.gif);
+	background-repeat:no-repeat;
+	float:right;
+}
+
+header {
+/*padding: 5px; */
+}
+
+body {
+	font-family: Verdana, Geneva, sans-serif;
+	background-color: #f1f1ee;
+}
+.centered {
+	text-align: center;
+}
+
+.clearFloat {
+	clear : both;
+}
+
+</style>
 <script type="text/javascript">
 
 document.addEventListener("DOMContentLoaded",docLoaded);
@@ -21,41 +79,53 @@ function docLoaded() {
 </script>
 </head>
 <body>
-<form id="form1" name="form1" method="get" action="">
-	<label>Site:
-		<?php
-    // include the pull down menu to select site
-    require_once "selectMenu.php";
-    ?>
-  </label>
-	<br />
-  <label>Rating:
-    <select name="rating" id="rating" onchange="updateRatings()">
-      <option value="all">All</option>
-      <option value="0">None</option>
-      <option value="1">Thumbs Up</option>
-      <option value="-1">Thumbs Down</option>
-    </select>
+<header>
+<img src="images/sulogo.png" width="213" height="48" alt="StumbleUpon" style="float:left"/>
+<a href="index.html"><img src="images/home.gif" style="float:right" /></a>
+<h2 class="clearFloat centered">Display  Tag Data using PHP</h2>
+</header>
+<div id="sidePane">
+<div id="filter">
+  <fieldset><legend>Filter</legend>
+  <form id="form1" name="form1" method="get" action="">
+    <label>Site:
+      <?php
+      // include the pull down menu to select site
+      require_once "selectMenu.php";
+      ?>
+    </label>
     <br />
- 
-  </label>
-  <p>
-    Count:
-    <label>
-      <input name="count" type="radio" id="tagCount" value="tagCount" checked="checked" />
-      Total Tags
+    <label>Rating:
+      <select name="rating" id="rating" onchange="updateRatings()">
+        <option value="all">All</option>
+        <option value="0">None</option>
+        <option value="1">Thumbs Up</option>
+        <option value="-1">Thumbs Down</option>
+      </select>
+      <br />
+   
     </label>
-    <label>
-      <input type="radio" name="count" value="people" id="peopleCount" />
-      People
-    </label>
-  </p>
-  <p>
-    <label>Filter by  tag counts:
-    <input name="minimum" type="text" size="5" /></label>
-  Minimum</p>
-  <input type="submit" name="button" id="button" value="Reload" />
-</form>
+    <p>
+      Count:
+      <label>
+        <input name="count" type="radio" id="tagCount" value="tagCount" checked="checked" />
+        Total Tags
+      </label>
+      <label>
+        <input type="radio" name="count" value="people" id="peopleCount" />
+        People
+      </label>
+    </p>
+    <p>
+      <label>Filter by  tag counts:
+      <input name="minimum" type="text" size="5" /></label>
+    Minimum</p>
+    <input type="submit" name="button" id="button" value="Reload" />
+  </form>
+  </fieldset>
+</div>
+</div>
+<div id="main">
 <?php 
 
 //define('DEBUG',true);
@@ -121,5 +191,6 @@ function docLoaded() {
 		
 	generateTable($rating,$count,$minimum,$siteName);
 ?>
+</div>
 </body>
 </html>

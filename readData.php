@@ -2,11 +2,36 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>StumbleUpon Dashboard</title>
+<title>Import Data</title>
 <style type="text/css">
 #main {
-	margin: 10px;
+	padding : 5px;
+	margin : 5px;
 	background-color: #ffffff;
+	float : left;
+	margin-top:20px;
+	min-height:200px;
+	min-width:300px;
+}
+
+#filter {
+	padding: 5px;
+	border: thin solid #CCC;
+	background-color:#eee;
+	font-size:.8em;
+	max-width:200px;
+}
+
+#sidePane {
+	margin: 5px;
+	float : left;
+	
+}
+
+#instructions{
+	font-size:.8em;
+	margin-top:5px;
+	max-width:250px;
 }
 
 .logo-primary {
@@ -14,13 +39,20 @@
 	width : 290px;
 	background-image: url(images/sulogo.png);
 	background-repeat:no-repeat;
+	float:left;
+}
+
+.nav-home {
+	background-image: url(images/home.gif);
+	background-repeat:no-repeat;
+	float:right;
 }
 
 header {
-margin: 10px;
+/*padding: 5px; */
 }
 
-body,td,th {
+body {
 	font-family: Verdana, Geneva, sans-serif;
 	background-color: #f1f1ee;
 }
@@ -28,44 +60,67 @@ body,td,th {
 	text-align: center;
 }
 
-.center{
-	
+.clearFloat {
+	clear : both;
 }
+
 </style>
 
 <script type="text/javascript">
+/*
 function doAction(action) {
 	console.log(location);
 	window.location = "http://33.33.33.33/preakness/stumbleupon/readData.php?action=" + action; 
-}
+}*/
 </script>
 </head>
 
 <body>
 <header>
-<img src="images/sulogo.png" width="291" height="66" alt="StumbleUpon" /> 
-<h2 class="centered">Dashboard</h2>
-<h3 class="centered">Import Data</h3>
+<img src="images/sulogo.png" width="213" height="48" alt="StumbleUpon" style="float:left"/>
+<a href="index.html"><img src="images/home.gif" style="float:right" /></a>
+<h2 class="clearFloat centered">Import Data</h2>
 </header>
-<div id="nav">
-<a href="index.html">Home</a>
-</div>
-<div  id="main">
+<div id="filter">
 <form id="form1" name="form1" method="get" action="">  
-  <label>Action:
-    <select name="action" id="action">
-      <option value="create" selected="selected">Create</option>
-      <option value="import">Import</option>
-      <option value="delete">Delete</option>
-    </select>
-  </label>
-  <input type="submit" name="button" id="button" value="Do It" />
+
+  <table width="200" border="0" cellpadding="1" cellspacing="2">
+    <tr>
+      <td>Data:</td>
+      <td>
+      	<select name="dataLocation" id="dataLocation" style="width:80px">
+        	<option value="smallData" selected="selected">Sample</option>
+          <option value="data">All</option>
+      	</select>
+      </td>
+    </tr>
+    <tr>
+      <td>Action:</td>
+      <td><select name="action" id="action" style="width:80px">
+          <option value="create" selected="selected">Create</option>
+          <option value="import">Import</option>
+          <option value="delete">Delete</option>
+          </select>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center"><input type="submit" name="button" id="button" value="Do It" /></td>
+    </tr>
+	</table>
 </form>
+</div>
+<p>Output:</p>
+<div  id="main">
+
 <?php 
 
 	define('EXECUTE_SQL_STATEMENTS',true);		// for debugging turn this off to prevent execution of sql statements
-	$uniqueId = 100;
+	$uniqueId = 100;	// to be used for initial id in the siteViews table id column
 	
+	/* displays the last mysql error and an optional error message
+	*
+	* $errorMsg -> optional error messgae
+	*/
 	function showError($errorMsg = NULL)
 	{
 		if ($errorMsg)
@@ -100,6 +155,9 @@ function doAction(action) {
 		} 
 	}
 	
+	/* parses a comma separated value file and breaks it down into data to be inserted into siteViews table to track each person viewing a site and
+	the tags table which for each siteView has entries for all the tags associated with that user 
+	*/
 	function importFile($filePath,$siteName) {
 		global $uniqueId;
 		print "Import Data from file: $filePath\n<br />";
@@ -158,6 +216,8 @@ function doAction(action) {
 		}
 	}
 	
+	/* deletes the two tables 'tags' and 'siteViews' if they exists
+	*/
 	function delete() {
 		$sqlStatements = array();
 		$sqlStatements[] = "DROP TABLE IF EXISTS tags";
@@ -165,6 +225,8 @@ function doAction(action) {
 		executeSqlStatements($sqlStatements);
 	}
 
+	/* Creates the database 'stumbleupon' and the two tables, 'tags' and 'siteViews'
+	*/
 	function create() {
 		$sqlStatements = array();
 		$sqlStatements[] = "CREATE DATABASE IF NOT EXISTS stumbleupon";
@@ -194,12 +256,16 @@ function doAction(action) {
 	}
 	
 	
-
+	// get action & data parameters passed on the url
 	$action = @ $_GET["action"];
-	print "action = $action\n<br />";
+	if (isset($action))
+		print "action = $action\n<br />";
+	if (!($importPath = @ $_GET["dataLocation"]))
+		$importPath = "smallData";
+	print "data to import: $importPath\n<br />";
 	switch ($action) {
 		case "import" :
-			iterateThroughDirectory("smallData");
+			iterateThroughDirectory($importPath);
 			break;
 		case "delete" :	
 			delete();
