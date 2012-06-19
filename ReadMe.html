@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Instructions &amp; Read Me</title>
+<style type="text/css">
+#main {
+	padding : 5px;
+	margin : 5px;
+	background-color: #ffffff;
+	float : left;
+}
+
+#filter {
+	padding: 5px;
+	border: thin solid #CCC;
+	background-color:#eee;
+	font-size:.8em;
+}
+
+#sidePane {
+	margin: 5px;
+	float : left;
+	
+}
+
+#instructions{
+	font-size:.8em;
+	margin-top:5px;
+	max-width:250px;
+}
+
+.logo-primary {
+	height : 66px;
+	width : 290px;
+	background-image: url(images/sulogo.png);
+	background-repeat:no-repeat;
+	float:left;
+}
+
+.nav-home {
+	background-image: url(images/home.gif);
+	background-repeat:no-repeat;
+	float:right;
+}
+
+header {
+/*padding: 5px; */
+}
+
+body {
+	font-family: Verdana, Geneva, sans-serif;
+	background-color: #f1f1ee;
+}
+.centered {
+	text-align: center;
+}
+
+.clearFloat {
+	clear : both;
+}
+
+.topNav{
+	height:48px;
+}
+
+img {
+	border: thin solid #333;
+}
+
+</style>
+</head>
+
+<body>
+<div class="topNav">
+<img src="images/sulogo.png" width="213" height="48" alt="StumbleUpon" style="float:left"/><a href="index.html"><img src="images/home.gif" style="float:right" /></a>
+</div>
+<h2 class="clearFloat centered">Instructions &amp; Read Me</h2>
+<h3>Author</h3>
+<ul>
+  <li>Scott Richards <a href="mailto:scott.srichards@gmail.com">scott.srichards@gmail.com</a></li>
+  <li>June 19,2012</li>
+</ul>
+<h3>Environment</h3>
+<ul>
+  <li>Operating System:
+    ubuntu 10.04.1</li>
+  <li>PHP: 5.3.2</li>
+  <li>Apache: 2.2.14</li>
+  <li>MySQL: 5.1.61</li>
+</ul>
+<h3>Instructions</h3>
+<hr />
+<h4>Create Table</h4>
+<p>To get started click the &quot;Import Data&quot; link from the main page, 'index.html'. You will need to first create the database 'stumbleupon' and two tables, 'siteViews' and 'tags'. To do this select 'Create' from the pull down then click the &quot;Do It&quot; button. You should see some SQL statements and results like below.</p>
+<p><img src="images/screenshots/CreateTables.jpg" width="811" height="525" alt="Create Tables" /> </p>
+<h4>Import Data</h4>
+<p>Once you have created the tables you can import the data from the comma separated files. To do this you can select some sample data with the &quot;Sample&quot; option. This takes a lot less time to do the import and has a more manageable data set or select &quot;All&quot; from the &quot;Data:&quot; pull down menu to import the entire set of data from all the .csv files provided, this will take a very long time to complete. After it completes you should see output like below. Now you can click on the &quot;Home&quot; icon at the top right of the page and start looking at the data.</p>
+<p><img src="images/screenshots/importData.jpg" width="796" height="518" alt="Import Data" /></p>
+<h4>Display Tag Data with PHP</h4>
+<p>To see the imported data, from the main page click on &quot;Display Tag Data as PHP&quot; or as Ajax. The PHP page requires re-loading the page whenever you change on the form items to filter the data, click the &quot;Reload&quot; button to update the data being displayed. Note all the form values are reset to their default values.</p>
+<p><strong>Displaying Tag Data with AJAX</strong></p>
+<p>The  Ajax page updates the data whenever you click on any of the form items, and the form items retain their values reflecting what is currently being displayed. When any of the filter fields are changed an xml http request is made to a php file 'sql/jsonData.php' which does the SQL query and returns the data in JSON format. Then using Javascript the JSON object is navigated and the data is returned as an html table. The triangles at the top of each column can be used to change the sort field, and order.</p>
+<p>Displaying Tag Data with Ajax, Reverse Sort by Count, Minimum = 13<img src="images/screenshots/displayingData.jpg" width="662" height="670" alt="Displaying Data" /></p>
+<h4>Filtering Tag Data</h4>
+<p>Use the &quot;Site&quot; pull down menu to select the site to display tags from or All to display tags for all sites.</p>
+<p>Use the &quot;Rating&quot; menu to filter by the specified rating.</p>
+<p>Use &quot;Count&quot; to show the total number of tags or number of people for the specified rating.</p>
+<p>Use &quot;Miminimum&quot; to only display results equal or greater than the specified minimum.</p>
+<h4>Sorting Tag Data</h4>
+<p>The solid triangle in the table header indicates which column the data is sorted by. Click on the solid triangle to change the sort order from ascending to descending. Click on the other triangles in the table column headers to sort the data by that column.</p>
+</body>
+</html>
