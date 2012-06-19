@@ -45,6 +45,9 @@ body {
 
 window.onload=filter;
 
+var sortColumnName = 'tag';
+var sortOrder = 'ASC';
+
 // remove the specified html node from the dom by navigating up to its parent node
 function removeElement(node)
 {
@@ -61,6 +64,50 @@ function returnRatingImage(rating)
 		return'0'; 
 }
 
+function returnSortImage(sortOrder,sortOn)
+{
+	if (sortOn) {
+		if (sortOrder == 'ASC')
+			return "images/upArrowSolid.gif";
+		else
+			return "images/downArrowSolid.gif";
+	} else {
+		if (sortOrder == 'ASC')
+			return "images/upArrow.gif";
+		else
+			return "images/downArrow.gif";
+	}
+}
+
+/* sort the column based on the specified columnName
+ * updates sorted column name, and sort order (if it is the current sorting column)
+ * then we regenerate json data based on updated SQL query appending "ORDER BY sortColumnName sortOrder;" 
+*/
+function sortColumn(columnName){
+	if (columnName == sortColumnName) {
+		if (sortOrder == 'ASC')
+			sortOrder = 'DESC';
+		else 
+			sortOrder = 'ASC';
+	} else
+		sortColumnName = columnName;
+	filter();
+}
+
+function updateArrowImage(columnName)
+{
+	var sortColId = columnName + 'Col';
+	imgElem = document.getElementById(sortColId);
+	imgElem.setAttribute("src",returnSortImage(sortOrder,columnName == sortColumnName));
+}
+
+function updateArrowImages()
+{
+	updateArrowImage('rating');
+	updateArrowImage('tag');
+	updateArrowImage('count');
+}
+
 function generateTable(responseText)
 {
 	// this is the div with id 'main' where we want to insert the table
@@ -70,17 +117,16 @@ function generateTable(responseText)
 	var numRows = jsonObj.length;
 	main.innerHTML = '\n<br />';
 	var tableHTML = '<table id="tableId" border="1" cellpadding="2" cellspacing="0">\n';
-	tableHTML += '<tr><th>Rating</th><th>Tag</th><th>Count</th></tr>'; 
+	tableHTML += '<tr><th>Rating<img id="ratingCol" src="images/upArrow.gif" onclick="sortColumn(\'rating\')"/></th><th>Tag<img id="tagCol" src="images/upArrowSolid.gif" onclick="sortColumn(\'tag\')"/></th><th>Count<img id="countCol" src="images/upArrow.gif" onclick="sortColumn(\'count\')"/></th></tr>'; 
 	for (i=0;i<jsonObj.length;i++) {
 		tableHTML += '<tr><td>' + returnRatingImage(jsonObj[i].rating) + '</td><td>' + jsonObj[i].tag + '</td><td>' + jsonObj[i].count + '</td></tr>';
-		console.log("Tag: " + jsonObj[i].tag + "Count: " + jsonObj[i].count);
+//		console.log("Tag: " + jsonObj[i].tag + "Count: " + jsonObj[i].count);
 	}
 	tableHTML += "</table>";
 	main.innerHTML += tableHTML;
+	updateArrowImages();	// after we regenerate html we need to update state of arrows
 }
 
-function filterFormObject() {
-}
 
 function filter() {
 	if (window.XMLHttpRequest) {
@@ -102,6 +148,8 @@ function filter() {
 		url += "?rating=" + document.forms["filterform"].elements["rating"].value;
 	  url += "&count=" + ((document.forms["filterform"].elements["tagCount"].checked) ? "tagCount" : "people");
 		url += "&siteName=" + document.forms["filterform"].elements["siteNameSelectMenu"].value;
+		url += "&orderBy=" + sortColumnName;
+		url += "&sortOrder=" + sortOrder;
 		if (document.forms["filterform"].elements["minimum"].value > 0 )
 			url += "&minimum=" + document.forms["filterform"].elements["minimum"].value;
 		console.log("url: " + url);
