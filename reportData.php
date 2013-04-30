@@ -35,8 +35,9 @@ function docLoaded() {
 <?php 
 
 	define('EXECUTE_SQL_STATEMENTS',true);		// for debugging turn this off to prevent execution of sql statements
-	define('SQL_SERVER',"localhost");
-	define('SQL_USER',"root");
+	define('SQL_SERVER',"ec2-184-169-207-10.us-west-1.compute.amazonaws.com");
+	define('SQL_USER',"pearson");
+	define('SQL_PASSWORD',"pearson2");
 	define('SQL_DATABASE',"stumbleupon");
 	define('SQL_TAGS_TABLE',"tags");
 		
@@ -51,7 +52,7 @@ function docLoaded() {
 			print "$sqlStatement\n</br>";
 		}
 		// create a connection to mysql
-		$connection = mysql_connect("localhost","root");
+		$connection = mysql_connect(SQL_SERVER,SQL_USER,SQL_PASSWORD);
 		// select the stumbleupon database
 		mysql_select_db("stumbleupon",$connection);
 		foreach ($sqlStatements as $sqlStatement) {

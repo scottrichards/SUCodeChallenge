@@ -139,7 +139,7 @@ function doAction(action) {
 			print "$sqlStatement\n</br>";
 		}
 		// create a connection to mysql
-		if (! ($connection = @ mysql_connect("localhost","root")))
+		if (! ($connection = @ mysql_connect("ec2-184-169-207-10.us-west-1.compute.amazonaws.com","pearson","pearson2")))
 			die ("could not connect to mysql localhost");
 		
 		// select the stumbleupon database
