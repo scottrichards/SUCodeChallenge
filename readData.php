@@ -79,7 +79,7 @@ function doAction(action) {
 <header>
 <img src="images/sulogo.png" width="213" height="48" alt="StumbleUpon" style="float:left"/>
 <a href="index.html"><img src="images/home.gif" style="float:right" /></a>
-<h2 class="clearFloat centered">Import Data</h2>
+<h2 class="clearFloat centered">Import Data!</h2>
 </header>
 <div id="filter">
 <form id="form1" name="form1" method="get" action="">  
